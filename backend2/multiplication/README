@@ -1,0 +1,4 @@
+For starting docker containers individualy:
+
+docker build -t backend2 .
+docker run -d -p 8002:8002 backend2

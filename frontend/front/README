@@ -1,0 +1,4 @@
+For starting docker containers individualy:
+
+docker build -t frontend .
+docker run -d -p 8003:8003 frontend
