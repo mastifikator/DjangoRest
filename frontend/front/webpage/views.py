@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .forms import UserForm
 import requests
+import json
 
 
 def index(request):
@@ -15,6 +16,9 @@ def index(request):
         r2 = requests.get(
             'http://localhost:8002/restapi?value1=' + value1 + '&value2=' + value2)
 
-        return render(request, "webpage/result.html", {"r1": r1._content, "r2": r2.content})
+        dictionaryResult1 = dict(json.loads(r1.content))
+        dictionaryResult2 = dict(json.loads(r2.content))
+
+        return render(request, "webpage/result.html", {"r1": dictionaryResult1, "r2": dictionaryResult2})
     else:
         return render(request, "webpage/index.html", {"form": userform})

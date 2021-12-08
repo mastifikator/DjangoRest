@@ -20,4 +20,4 @@ def index(request):
                    'host_port': host_port}
 
     serializedResult = json.dumps(result_dict)
-    return HttpResponse(serializedResult)
+    return HttpResponse(serializedResult, content_type="application/json")

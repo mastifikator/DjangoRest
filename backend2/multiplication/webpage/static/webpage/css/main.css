@@ -1,0 +1,15 @@
+body{
+    background: rgb(221, 213, 213);
+}
+
+table {
+	width: 50%;
+	margin-bottom: 20px;
+	border: 1px solid #050505;
+	border-collapse: collapse; 
+}
+
+table td {
+	border: 1px solid #050505;
+	padding: 5px;
+}

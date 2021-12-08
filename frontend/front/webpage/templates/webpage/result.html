@@ -13,11 +13,22 @@
 <body>
     <h1>Микросервисный калькулятор</h1>
     <p>{% now "N j, Y, P" %}</p>
-    <p>Результат вычислений</p>
+    <p>Результат вычислений: </p>
     <br>
-    {{ r1 }}
+
+    <ul>
+        {% for key, value in r1.items %}
+        <li>{{ key }} - {{ value }}</li>
+        {% endfor %}
+    </ul>
     <br>
-    {{ r2 }}
+    <ul>
+        {% for key, value in r2.items %}
+        <li>{{ key }} - {{ value }}</li>
+        {% endfor %}
+    </ul>
+
+
 </body>
 
 </html>
