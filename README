@@ -1,0 +1,15 @@
+Education project "MICROSERVICES CALCULATOR"
+
+3 REST services:
+backend1 - produces addition received from frontend (port 8001)
+backend2 - produces multiplication received from frontend (port 8002)
+frontend - take value from user and after push button calculate do request to both backend (port 8003)
+
+For first running new version:
+docker-compose up --build
+
+For second and after:
+docker-compose up
+
+Fro shutdown:
+docker compose down
