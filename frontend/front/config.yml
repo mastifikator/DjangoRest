@@ -1,0 +1,10 @@
+backend:
+  server1: 
+    adress: backend1
+    port: 8001
+  server2:
+    adress: backend2
+    port: 8002
+
+web: 
+  port: 8003
