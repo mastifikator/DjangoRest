@@ -1,9 +1,9 @@
 Education project "MICROSERVICES CALCULATOR"
 
 3 REST services:
-backend1 - produces addition received from frontend (port 8001)
-backend2 - produces multiplication received from frontend (port 8002)
-frontend - take value from user and after push button calculate do request to both backend (port 8003)
+backend1 - produces addition received from frontend (localhost:8001/webpage)
+backend2 - produces multiplication received from frontend (localhost:8002/webpage)
+frontend - take value from user and after push button calculate do request to both backend (localhost:8003)
 
 For first running new version:
 docker-compose up --build

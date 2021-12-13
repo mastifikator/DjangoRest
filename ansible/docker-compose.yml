@@ -1,0 +1,56 @@
+version: '3'
+services:
+  backend1:
+    image: python:3
+    container_name: backend1
+    privileged: true
+    ports:
+      - "8001:8001"
+      - "8021:22"
+    networks:
+      - calculator-bridge-network
+    command: >
+      bash -c "apt-get update
+      && apt-get install -y openssh-server
+      && service ssh start
+      && useradd ansible
+      && usermod -G root ansible
+      && echo "ansible:123456" | chpasswd
+      && sleep infinity"
+  backend2:
+    image: python:3
+    privileged: true
+    container_name: backend2
+    ports:
+      - "8002:8002"
+      - "8022:22"
+    networks:
+      - calculator-bridge-network
+    command: >
+      bash -c "apt-get update
+      && apt-get install -y openssh-server
+      && service ssh start
+      && useradd ansible
+      && usermod -G root ansible
+      && echo "ansible:123456" | chpasswd
+      && sleep infinity"
+  frontend:
+    image: python:3
+    privileged: true
+    container_name: frontend
+    ports:
+      - "8003:8003"
+      - "8023:22"
+    networks:
+      - calculator-bridge-network
+    command: >
+      bash -c "apt-get update
+      && apt-get install -y openssh-server
+      && service ssh start
+      && useradd ansible
+      && usermod -G root ansible
+      && echo "ansible:123456" | chpasswd
+      && sleep infinity"
+networks:
+  calculator-bridge-network:
+    driver: bridge
