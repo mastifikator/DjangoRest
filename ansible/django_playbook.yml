@@ -1,0 +1,27 @@
+---
+- name: Разворачивание сервиса сложения
+  hosts: backend1
+  become_method: sudo
+  become_user: root
+
+  tasks:
+
+  - name : Копируем каталог с сайтом
+    copy:
+      src: /home/ansible/backend1/additional
+      dest: /home/site
+
+  - name: Обновляем менеджер пакетов pip
+    raw: python -m pip install --proxy="http://bproxy.msk.mts.ru:3128" --upgrade pip
+    args:
+      executable: /bin/bash
+
+  - name: установливаем зависимости
+    raw: pip install --proxy="http://bproxy.msk.mts.ru:3128" -r /home/site/additional/requirements.txt
+    args:
+      executable: /bin/bash
+
+  - name: Запускаем gunicorn
+    raw: gunicorn -b 0.0.0.0:8001 additional.wsgi:application --chdir /home/site/additional --daemon
+    args:
+      executable: /bin/bash

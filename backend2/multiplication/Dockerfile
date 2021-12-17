@@ -14,6 +14,7 @@ RUN mkdir /site
 COPY . /site
 WORKDIR /site
 
+RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 #for development

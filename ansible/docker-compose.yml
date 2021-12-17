@@ -7,6 +7,7 @@ services:
     ports:
       - "8001:8001"
       - "8021:22"
+      - "80:80"
     networks:
       - calculator-bridge-network
     command: sleep infinity

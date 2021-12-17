@@ -11,6 +11,9 @@ RUN mkdir /var/run/sshd
 RUN echo 'root:123456' | chpasswd
 RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
+COPY ansible_master_rsa.pub /root/.ssh/ansible_master_rsa.pub
+RUN cat /root/.ssh/ansible_master_rsa.pub >> /root/.ssh/authorized_keys
+
 EXPOSE 22 8001 8002 8003
 
 COPY entrypoint.sh /entrypoint.sh
