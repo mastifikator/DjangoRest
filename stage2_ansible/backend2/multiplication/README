@@ -1,0 +1,6 @@
+before run containers need create individual network:
+docker network create calculator-network
+
+For starting docker containers individualy (build must start from directory with Dockerfile):
+docker build -t backend2 .
+docker run -d -p 8002:8002 --network calculator-network --name backend2 backend2

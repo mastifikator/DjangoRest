@@ -1,0 +1,114 @@
+---
+- name: Разворачивание фронтэнда
+  hosts: frontend
+  become_method: sudo
+  become_user: root
+  tasks:
+
+  - name: устанавливаем служебные пакеты
+    apt:
+      pkg:
+      - net-tools
+      - vim
+
+  - name: Устанавливаем nginx
+    apt:
+      name: nginx
+
+  - name: Копируем каталог с сайтом
+    copy:
+      src: /home/ansible/frontend/front
+      dest: /home/site
+
+  - name: Размещаем конфиги nginx
+    raw: cp -r /home/site/front/nginx/front /etc/nginx/sites-available
+    args:
+      executable: /bin/bash
+
+  - name: Создаем ссылку nginx
+    ignore_errors: yes
+    raw: ln -s /etc/nginx/sites-available/front /etc/nginx/sites-enabled
+    args:
+      executable: /bin/bash
+
+  - name: Обновляем менеджер пакетов pip
+    raw: python -m pip install --proxy="http://bproxy.msk.mts.ru:3128" --upgrade pip
+    args:
+      executable: /bin/bash
+
+  - name: установливаем зависимости
+    raw: pip install --proxy="http://bproxy.msk.mts.ru:3128" -r /home/site/front/requirements.txt
+    args:
+      executable: /bin/bash
+
+  - name: Запускаем gunicorn
+    community.general.gunicorn:
+      app: 'front.wsgi:application'
+      chdir: '/home/site/front'
+      config: '/home/site/front/gunicorn.py'
+
+- name: Разворачивание сервиса сложения
+  hosts: backend1
+  become_method: sudo
+  become_user: root
+  tasks:
+
+  - name: устанавливаем служебные пакеты
+    apt:
+      pkg:
+      - net-tools
+      - vim
+
+  - name : Копируем каталог с сайтом
+    copy:
+      src: /home/ansible/backend1/additional
+      dest: /home/site
+
+  - name: Обновляем менеджер пакетов pip
+    raw: python -m pip install --proxy="http://bproxy.msk.mts.ru:3128" --upgrade pip
+    args:
+      executable: /bin/bash
+
+  - name: установливаем зависимости
+    raw: pip install --proxy="http://bproxy.msk.mts.ru:3128" -r /home/site/additional/requirements.txt
+    args:
+      executable: /bin/bash
+
+  - name: Запускаем gunicorn
+    community.general.gunicorn:
+      app: 'additional.wsgi:application'
+      chdir: '/home/site/additional'
+      config: '/home/site/additional/gunicorn.py'
+
+- name: Разворачивание сервиса умножения
+  hosts: backend2
+  become_method: sudo
+  become_user: root
+  tasks:
+
+  - name: устанавливаем служебные пакеты
+    apt:
+      pkg:
+      - net-tools
+      - vim
+
+  - name: Копируем каталог с сайтом
+    copy:
+      src: /home/ansible/backend2/multiplication
+      dest: /home/site
+
+  - name: Обновляем менеджер пакетов pip
+    raw: python -m pip install --proxy="http://bproxy.msk.mts.ru:3128" --upgrade pip
+    args:
+      executable: /bin/bash
+
+  - name: установливаем зависимости
+    raw: pip install --proxy="http://bproxy.msk.mts.ru:3128" -r /home/site/multiplication/requirements.txt
+    args:
+      executable: /bin/bash
+
+  - name: Запускаем gunicorn
+    community.general.gunicorn:
+      app: 'multiplication.wsgi:application'
+      chdir: '/home/site/multiplication'
+      config: '/home/site/multiplication/gunicorn.py'

@@ -1,0 +1,6 @@
+before run containers need create individual network:
+docker network create calculator-network
+
+For starting docker containers individualy (build must start from directory with Dockerfile):
+docker build -t frontend .
+docker run -d -p 8003:8003 --network calculator-network --name frontend frontend
