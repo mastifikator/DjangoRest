@@ -1,5 +1,9 @@
 Education project "MICROSERVICES CALCULATOR"
 
+2 stage:
+stage1_docker - build only with Dockerfile and docker-compose
+stage2_ansible - build with clear Dockerfile, docker-compose and tuning with ansible
+
 3 REST services:
 backend1 - produces addition received from frontend (localhost:8001/webpage)
 backend2 - produces multiplication received from frontend (localhost:8002/webpage)
