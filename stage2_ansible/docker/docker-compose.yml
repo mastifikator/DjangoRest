@@ -5,9 +5,8 @@ services:
     container_name: backend1
     privileged: true
     ports:
-      - "8001:8000"
+      - "8001:8001"
       - "8021:22"
-      - "81:80"
     networks:
       - calculator-bridge-network
     command: sleep infinity
@@ -16,9 +15,8 @@ services:
     privileged: true
     container_name: backend2
     ports:
-      - "8002:8000"
+      - "8002:8002"
       - "8022:22"
-      - "82:80"
     networks:
       - calculator-bridge-network
     command: sleep infinity
@@ -27,10 +25,8 @@ services:
     privileged: true
     container_name: frontend
     ports:
-      - "8004:8000"
-      - "8003:8003"
+      - "8000:8000"
       - "8023:22"
-      - "83:80"
     networks:
       - calculator-bridge-network
     command: sleep infinity

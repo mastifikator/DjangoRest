@@ -9,6 +9,7 @@
     apt:
       pkg:
       - net-tools
+      - iputils-ping
       - vim
 
   - name: Устанавливаем nginx
@@ -17,7 +18,7 @@
 
   - name: Копируем каталог с сайтом
     copy:
-      src: /home/ansible/frontend/front
+      src: /home/frontend/front
       dest: /home/site
 
   - name: Размещаем конфиги nginx
@@ -47,6 +48,12 @@
       chdir: '/home/site/front'
       config: '/home/site/front/gunicorn.py'
 
+  - name: Запускаем nginx
+    service:
+      name: nginx
+      state: started
+
+
 - name: Разворачивание сервиса сложения
   hosts: backend1
   become_method: sudo
@@ -57,11 +64,12 @@
     apt:
       pkg:
       - net-tools
+      - iputils-ping
       - vim
 
   - name : Копируем каталог с сайтом
     copy:
-      src: /home/ansible/backend1/additional
+      src: /home/backend1/additional
       dest: /home/site
 
   - name: Обновляем менеджер пакетов pip
@@ -90,11 +98,12 @@
     apt:
       pkg:
       - net-tools
+      - iputils-ping
       - vim
 
   - name: Копируем каталог с сайтом
     copy:
-      src: /home/ansible/backend2/multiplication
+      src: /home/backend2/multiplication
       dest: /home/site
 
   - name: Обновляем менеджер пакетов pip
