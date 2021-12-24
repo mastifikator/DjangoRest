@@ -24,7 +24,4 @@ RUN cp -r nginx/front /etc/nginx/sites-available && ln -s /etc/nginx/sites-avail
 #ENTRYPOINT [ "python", "manage.py"]
 #CMD ["runserver", "0.0.0.0:8003"]
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-ENTRYPOINT ["sh", "/entrypoint.sh"]
+ENTRYPOINT ["sh", "/site/entrypoint.sh"]
