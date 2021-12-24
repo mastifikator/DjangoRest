@@ -1,11 +1,11 @@
 stages:
-  - test docker
+  - test
 
 before_script:
   - pwd
   - docker info
 
-build_image:
+docker:
+  stage: test
   script:
-    - docker build -t my-docker-image .
-    - docker run my-docker-image /script/to/run/tests
+    - docker container list
