@@ -10,8 +10,7 @@ ENV PATH="${VENV}/bin:${PATH}"
 
 RUN apk update \
     && apk add --no-cache make gcc \
-    && pip install --upgrade pip \
-    && apk add --no-cache bash
+    && pip install --upgrade pip
 
 COPY requirements.txt .
 RUN python -m venv ${VENV} \

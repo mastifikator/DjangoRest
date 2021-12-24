@@ -24,8 +24,18 @@ services:
       - backend1
       - backend2
     ports:
-      - "8000:8000"
       - "8003:8003"
+    networks:
+      - calculator-network
+  nginx:
+    container_name: nginx
+    build: ./nginx/
+    restart: always
+    depends_on:
+      - backend1
+      - backend2
+    ports:
+      - "8000:8000"
     networks:
       - calculator-network
 networks:

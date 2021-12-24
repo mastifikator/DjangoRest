@@ -1,0 +1,35 @@
+version: '3'
+services:
+  backend1:
+    build: .
+    container_name: backend1
+    privileged: true
+    ports:
+      - "8001:8001"
+      - "8021:22"
+    networks:
+      - calculator-bridge-network
+    command: sleep infinity
+  backend2:
+    build: .
+    privileged: true
+    container_name: backend2
+    ports:
+      - "8002:8002"
+      - "8022:22"
+    networks:
+      - calculator-bridge-network
+    command: sleep infinity
+  frontend:
+    build: .
+    privileged: true
+    container_name: frontend
+    ports:
+      - "8000:8000"
+      - "8023:22"
+    networks:
+      - calculator-bridge-network
+    command: sleep infinity
+networks:
+  calculator-bridge-network:
+    driver: bridge

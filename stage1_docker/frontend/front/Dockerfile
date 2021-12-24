@@ -1,27 +1,33 @@
-FROM python:3
+FROM python:3.9-alpine as builder
 LABEL maintainer="N1k0"
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-
 ENV HTTP_PROXY="http://bproxy.msk.mts.ru:3128"
 ENV HTTPS_PROXY="http://bproxy.msk.mts.ru:3128"
-ENV NO_PROXY="backend1, backend2"
-RUN echo 'Acquire::http::Proxy "http://bproxy.msk.mts.ru:3128";' > /etc/apt/apt.conf.d/proxy
+ENV VENV="/venv"
+ENV PATH="${VENV}/bin:${PATH}"
 
-RUN apt-get update && apt-get upgrade -y && apt-get autoremove && apt-get autoclean
-RUN apt-get install -y nginx
+RUN apk update \
+    && apk add --no-cache make gcc \
+    && pip install --upgrade pip
 
-RUN mkdir /site
-COPY . /site
+COPY requirements.txt .
+RUN python -m venv ${VENV} \
+    && pip install --no-cache-dir -r requirements.txt \
+    && mkdir /site
+
+FROM python:3.9-alpine
+ENV VENV="/venv"
+ENV PATH="${VENV}/bin:${PATH}"
+COPY --from=builder ${VENV} ${VENV}
+
 WORKDIR /site
-
-RUN python -m pip install --upgrade pip
-RUN pip install -r requirements.txt
-RUN cp -r nginx/front /etc/nginx/sites-available && ln -s /etc/nginx/sites-available/front /etc/nginx/sites-enabled
+COPY . .
 
 #for development
 #ENTRYPOINT [ "python", "manage.py"]
-#CMD ["runserver", "0.0.0.0:8003"]
+#CMD ["runserver", "0.0.0.0:8001"]
 
-ENTRYPOINT ["sh", "/site/entrypoint.sh"]
+EXPOSE 8003
+CMD ["gunicorn"  , "-b", "0.0.0.0:8003", "front.wsgi:application"]
