@@ -9,3 +9,5 @@ docker:
   stage: test
   script:
     - docker container list
+  tags:
+    - docker
