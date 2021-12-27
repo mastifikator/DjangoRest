@@ -6,34 +6,37 @@ before_script:
   - pwd
   - echo $CI_PROJECT_PATH
   - echo $CI_COMMIT_REF_NAME
+  - echo $CI_REGISTRY_USER
+  - echo $CI_REGISTRY_PASSWORD
+  - echo $CI_REGISTRY
 
 variables:
   GIT_STRATEGY: clone
-  IMAGE_BACKEND1: 172.16.215.90:8888/djangorest/backend1:$CI_COMMIT_REF_NAME
-  IMAGE_BACKEND2: 172.16.215.90:8888/djangorest/backend2:$CI_COMMIT_REF_NAME
-  IMAGE_FRONTEND: 172.16.215.90:8888/djangorest/frontend:$CI_COMMIT_REF_NAME
-  IMAGE_NGINX: 172.16.215.90:8888/djangorest/nginx:$CI_COMMIT_REF_NAME
 
 backend1_build:
   stage: build
   script:
-    - docker build --pull -t $IMAGE_BACKEND1 ./stage1_docker/backend1/additional/
-    - docker push $IMAGE_BACKEND1
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY/djangorest/backend1:latest ./stage1_docker/backend1/additional/
+    - docker push $CI_REGISTRY/djangorest/backend1:latest
 
 backend2_build:
   stage: build
   script:
-    - docker build --pull -t $IMAGE_BACKEND2 ./stage1_docker/backend2/multiplication/
-    - docker push $IMAGE_BACKEND2
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY/djangorest/backend2:latest ./stage1_docker/backend2/multiplication/
+    - docker push $CI_REGISTRY/djangorest/backend2:latest
 
 frontend_build:
   stage: build
   script:
-    - docker build --pull -t $IMAGE_FRONTEND ./stage1_docker/frontend/front/
-    - docker push $FRONTEND
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY/djangorest/frontend:latest ./stage1_docker/frontend/front/
+    - docker push $CI_REGISTRY/djangorest/backend1:latest
 
 nginx_build:
   stage: build
   script:
-    - docker build --pull -t $IMAGE_NGINX ./stage1_docker/nginx/
-    - docker push $FRONTEND
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY/djangorest/nginx:latest ./stage1_docker/nginx/
+    - docker push $CI_REGISTRY/djangorest/nginx:latest
