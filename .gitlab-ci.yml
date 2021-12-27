@@ -13,31 +13,55 @@ before_script:
 variables:
   GIT_STRATEGY: clone
   USER_NAME: root
+  BACKEND1_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/backend1:latest
+  BACKEND2_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/backend2:latest
+  FRONTEND_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/frontend:latest
+  NGINX_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/nginx:latest
 
 backend1_build:
   stage: build
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t $CI_REGISTRY/$USER_NAME/djangorest/backend1:latest ./stage1_docker/backend1/additional/
-    - docker push $CI_REGISTRY/$USER_NAME/djangorest/backend1:latest
+    - docker build -t $BACKEND1_IMAGE ./stage1_docker/backend1/additional/
+    - docker push $BACKEND1_IMAGE
 
 backend2_build:
   stage: build
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t $CI_REGISTRY/$USER_NAME/djangorest/backend2:latest ./stage1_docker/backend2/multiplication/
-    - docker push $CI_REGISTRY/$USER_NAME/djangorest/backend2:latest
+    - docker build -t $BACKEND2_IMAGE ./stage1_docker/backend2/multiplication/
+    - docker push $BACKEND2_IMAGE
 
 frontend_build:
   stage: build
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t $CI_REGISTRY/$USER_NAME/djangorest/frontend:latest ./stage1_docker/frontend/front/
-    - docker push $CI_REGISTRY/$USER_NAME/djangorest/backend1:latest
+    - docker build -t $FRONTEND_IMAGE ./stage1_docker/frontend/front/
+    - docker push $FRONTEND_IMAGE
 
 nginx_build:
   stage: build
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t $CI_REGISTRY/$USER_NAME/djangorest/nginx:latest ./stage1_docker/nginx/
-    - docker push $CI_REGISTRY/$USER_NAME/djangorest/nginx:latest
+    - docker build -t $NGINX_IMAGE ./stage1_docker/nginx/
+    - docker push $NGINX_IMAGE
+
+backend1_deploy:
+  stage: deploy
+  script:
+    - docker run -p 8001:8001 $BACKEND1_IMAGE backend1
+
+backend2_deploy:
+  stage: deploy
+  script:
+    - docker run -p 8002:8002 $BACKEND2_IMAGE backend2
+
+nginx_deploy:
+  stage: deploy
+  script:
+    - docker run -p 8000:8000 $NGINX_IMAGE nginx
+
+frontend_deploy:
+  stage: deploy
+  script:
+    - docker run -p 8003:8003 $FRONTEND_IMAGE frontend
