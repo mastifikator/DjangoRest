@@ -46,22 +46,27 @@ nginx_build:
     - docker build -t $NGINX_IMAGE ./stage1_docker/nginx/
     - docker push $NGINX_IMAGE
 
+environment_deploy:
+  stage: deploy
+  script:
+    - docker network create -d bridge calculator_network
+
 backend1_deploy:
   stage: deploy
   script:
-    - docker run -d -p 8001:8001 $BACKEND1_IMAGE 
+    - docker run -d -p 8001:8001 --network=calculator_network $BACKEND1_IMAGE 
 
 backend2_deploy:
   stage: deploy
   script:
-    - docker run -d -p 8002:8002 $BACKEND2_IMAGE
+    - docker run -d -p 8002:8002 --network=calculator_network $BACKEND2_IMAGE
 
 frontend_deploy:
   stage: deploy
   script:
-    - docker run -d -p 8003:8003 $FRONTEND_IMAGE
+    - docker run -d -p 8003:8003 --network=calculator_network $FRONTEND_IMAGE
 
 nginx_deploy:
   stage: deploy
   script:
-    - docker run -d -p 8000:8000 $NGINX_IMAGE
+    - docker run -d -p 8000:8000 --network=calculator_network $NGINX_IMAGE
