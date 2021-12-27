@@ -5,6 +5,9 @@ stages:
 before_script:
   - pwd
 
+variables:
+  GIT_STRATEGY: clone 
+
 backend1_build:
   stage: build
   script:
