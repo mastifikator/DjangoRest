@@ -4,6 +4,7 @@ stages:
 
 before_script:
   - pwd
+  - echo $CI_PROJECT_PATH
 
 variables:
   GIT_STRATEGY: clone 
@@ -11,14 +12,14 @@ variables:
 backend1_build:
   stage: build
   script:
-    - docker build ./backend1/additional
+    - docker build backend1 ./backend1/additional
 
 backend2_build:
   stage: build
   script:
-    - docker build ./backend2/multiplication
+    - docker build backend2 ./backend2/multiplication
 
 frontend_build:
   stage: build
   script:
-    - docker build ./frontend/front
+    - docker build frontend ./frontend/front
