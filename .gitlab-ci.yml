@@ -12,14 +12,14 @@ variables:
 backend1_build:
   stage: build
   script:
-    - docker build backend1 ./backend1/additional
+    - docker build backend1 $CI_PROJECT_PATH/backend1/additional/
 
 backend2_build:
   stage: build
   script:
-    - docker build backend2 ./backend2/multiplication
+    - docker build backend2 $CI_PROJECT_PATH/backend2/multiplication/
 
 frontend_build:
   stage: build
   script:
-    - docker build frontend ./frontend/front
+    - docker build frontend $CI_PROJECT_PATH/frontend/front/
