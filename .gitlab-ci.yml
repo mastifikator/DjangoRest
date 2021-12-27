@@ -22,32 +22,32 @@ backend1_build:
   stage: build
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t $BACKEND1_IMAGE ./stage1_docker/backend1/additional/
+    - docker build -t $BACKEND1_IMAGE --rm ./stage1_docker/backend1/additional/
     - docker push $BACKEND1_IMAGE
 
 backend2_build:
   stage: build
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t $BACKEND2_IMAGE ./stage1_docker/backend2/multiplication/
+    - docker build -t $BACKEND2_IMAGE --rm ./stage1_docker/backend2/multiplication/
     - docker push $BACKEND2_IMAGE
 
 frontend_build:
   stage: build
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t $FRONTEND_IMAGE ./stage1_docker/frontend/front/
+    - docker build -t $FRONTEND_IMAGE --rm ./stage1_docker/frontend/front/
     - docker push $FRONTEND_IMAGE
 
 nginx_build:
   stage: build
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t $NGINX_IMAGE ./stage1_docker/nginx/
+    - docker build -t $NGINX_IMAGE --rm ./stage1_docker/nginx/
     - docker push $NGINX_IMAGE
 
-environment_deploy:
-  stage: deploy
+environment_build:
+  stage: build
   script:
     - docker network create -d bridge calculator_network
 
