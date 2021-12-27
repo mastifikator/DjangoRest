@@ -1,11 +1,10 @@
 stages:
-  - test
+  - run
 
 before_script:
   - pwd
-  - docker info
 
 docker:
-  stage: test
+  stage: run
   script:
-    - docker container list
+    - docker-compose -d --build
