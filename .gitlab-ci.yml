@@ -1,10 +1,21 @@
 stages:
-  - run
+  - build
+  - deploy
 
 before_script:
   - pwd
 
-docker:
-  stage: run
+backend1_build:
+  stage: build
   script:
-    - docker-compose -d --build
+    - docker build ./backend1/additional
+
+backend2_build:
+  stage: build
+  script:
+    - docker build ./backend2/multiplication
+
+frontend_build:
+  stage: build
+  script:
+    - docker build ./frontend/front
