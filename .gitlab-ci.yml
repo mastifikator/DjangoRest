@@ -49,19 +49,19 @@ nginx_build:
 backend1_deploy:
   stage: deploy
   script:
-    - docker run -p 8001:8001 $BACKEND1_IMAGE backend1
+    - docker run -p 8001:8001 $BACKEND1_IMAGE 
 
 backend2_deploy:
   stage: deploy
   script:
-    - docker run -p 8002:8002 $BACKEND2_IMAGE backend2
-
-nginx_deploy:
-  stage: deploy
-  script:
-    - docker run -p 8000:8000 $NGINX_IMAGE nginx
+    - docker run -p 8002:8002 $BACKEND2_IMAGE
 
 frontend_deploy:
   stage: deploy
   script:
-    - docker run -p 8003:8003 $FRONTEND_IMAGE frontend
+    - docker run -p 8003:8003 $FRONTEND_IMAGE
+
+nginx_deploy:
+  stage: deploy
+  script:
+    - docker run -p 8000:8000 $NGINX_IMAGE
