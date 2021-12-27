@@ -6,6 +6,7 @@ before_script:
   - pwd
   - echo $CI_PROJECT_PATH
   - echo $CI_COMMIT_REF_NAME
+  - docker info
 
 variables:
   GIT_STRATEGY: clone
