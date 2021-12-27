@@ -6,8 +6,8 @@ before_script:
   - pwd
   - echo $CI_PROJECT_PATH
   - echo $CI_COMMIT_REF_NAME
-  - echo $CI_REGISTRY_USER
-  - echo $CI_REGISTRY_PASSWORD
+  - echo $CI_DEPLOY_USER
+  - echo $CI_DEPLOY_PASSWORD
   - echo $CI_REGISTRY
 
 variables:
@@ -16,27 +16,27 @@ variables:
 backend1_build:
   stage: build
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
     - docker build -t $CI_REGISTRY/djangorest/backend1:latest ./stage1_docker/backend1/additional/
     - docker push $CI_REGISTRY/djangorest/backend1:latest
 
 backend2_build:
   stage: build
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
     - docker build -t $CI_REGISTRY/djangorest/backend2:latest ./stage1_docker/backend2/multiplication/
     - docker push $CI_REGISTRY/djangorest/backend2:latest
 
 frontend_build:
   stage: build
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
     - docker build -t $CI_REGISTRY/djangorest/frontend:latest ./stage1_docker/frontend/front/
     - docker push $CI_REGISTRY/djangorest/backend1:latest
 
 nginx_build:
   stage: build
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
     - docker build -t $CI_REGISTRY/djangorest/nginx:latest ./stage1_docker/nginx/
     - docker push $CI_REGISTRY/djangorest/nginx:latest
