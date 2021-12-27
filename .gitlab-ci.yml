@@ -7,19 +7,25 @@ before_script:
   - echo $CI_PROJECT_PATH
 
 variables:
-  GIT_STRATEGY: clone 
+  GIT_STRATEGY: clone
+  IMAGE_BACKEND1: 172.16.215.90:8888/DjangoRest/backend1:$CI_COMMIT_REF_NAME
+  IMAGE_BACKEND2: 172.16.215.90:8888/DjangoRest/backend2:$CI_COMMIT_REF_NAME
+  IMAGE_FRONTEND: 172.16.215.90:8888/DjangoRest/frontend:$CI_COMMIT_REF_NAME
 
 backend1_build:
   stage: build
   script:
-    - docker build backend1 $CI_PROJECT_PATH/backend1/additional/
+    - docker build --pull -t $IMAGE_BACKEND1 $CI_PROJECT_PATH/backend1/additional/
+    - docker push $IMAGE_BACKEND1
 
 backend2_build:
   stage: build
   script:
-    - docker build backend2 $CI_PROJECT_PATH/backend2/multiplication/
+    - docker build --pull -t $IMAGE_BACKEND2 $CI_PROJECT_PATH/backend2/multiplication/
+    - docker push $IMAGE_BACKEND2
 
 frontend_build:
   stage: build
   script:
-    - docker build frontend $CI_PROJECT_PATH/frontend/front/
+    - docker build --pull -t $IMAGE_FRONTEND $CI_PROJECT_PATH/frontend/front/
+    - docker push $FRONTEND
