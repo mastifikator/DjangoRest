@@ -9,6 +9,7 @@ before_script:
   - echo $CI_REGISTRY_USER
   - echo $CI_REGISTRY_PASSWORD
   - echo $CI_REGISTRY
+  - docker network create -d bridge calculator_network
 
 variables:
   GIT_STRATEGY: clone
@@ -45,12 +46,6 @@ nginx_build:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $NGINX_IMAGE --rm ./stage1_docker/nginx/
     - docker push $NGINX_IMAGE
-
-environment_build:
-  stage: build
-  script:
-    - docker network rm calculator_network
-    - docker network create -d bridge calculator_network
 
 backend1_deploy:
   stage: deploy
