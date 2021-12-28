@@ -50,8 +50,9 @@ environment_build:
   stage: build
   script:
     - NETWORK_CHECK=$(docker network ls --filter name=calculator_network)
+    - NETWORK_NAME='calculator_network'
     - echo $NETWORK_CHECK
-    - if [["$NETWORK_CHECK" != *"calculator_network"*]]; then docker network create -d bridge calculator_network; fi
+    - if grep -q "$NETWORK_NAME" <<< "NETWORK_CHECK"; then echo "network $NETWORK_NAME exist"; else docker network create -d bridge calculator_network; fi
   allow_failure: true
 
 backend1_deploy:
