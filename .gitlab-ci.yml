@@ -50,6 +50,7 @@ environment_build:
   stage: build
   script:
     - docker network create -d bridge calculator_network
+  allow_failure: true
 
 backend1_deploy:
   stage: deploy
