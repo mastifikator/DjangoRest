@@ -50,7 +50,10 @@ environment_build:
   stage: build
   script:
     - NETWORK_CHECK=$(docker network ls --filter name=calculator_network)
+<<<<<<< HEAD
     - echo $NETWORK_CHECK
+=======
+>>>>>>> cc8fea906090cbeb9df0edfab2986614497a9348
     - if [ "$NETWORK_CHECK" == "" ]; then $(docker network create -d bridge calculator_network); fi
   allow_failure: true
 
