@@ -3,21 +3,21 @@ stages:
   - deploy
 
 before_script:
-  - pwd
   - echo $CI_PROJECT_PATH
   - echo $CI_COMMIT_REF_NAME
   - echo $CI_REGISTRY_USER
   - echo $CI_REGISTRY_PASSWORD
   - echo $CI_REGISTRY
   - docker network create -d bridge calculator_network
+allow_failure: true
 
 variables:
   GIT_STRATEGY: clone
   USER_NAME: root
-  BACKEND1_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/backend1:latest
-  BACKEND2_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/backend2:latest
-  FRONTEND_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/frontend:latest
-  NGINX_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/nginx:latest
+  BACKEND1_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/backend1/$CI_COMMIT_REF_NAME:latest
+  BACKEND2_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/backend2/$CI_COMMIT_REF_NAME:latest
+  FRONTEND_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/frontend/$CI_COMMIT_REF_NAME:latest
+  NGINX_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/nginx/$CI_COMMIT_REF_NAME:latest
 
 backend1_build:
   stage: build
