@@ -49,8 +49,8 @@ nginx_build:
 environment_build:
   stage: build
   script:
+    - docker network rm calculator_network
     - docker network create -d bridge calculator_network
-  allow_failure: true
 
 backend1_deploy:
   stage: deploy
