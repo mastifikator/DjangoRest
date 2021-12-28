@@ -55,19 +55,23 @@ environment_build:
 backend1_deploy:
   stage: deploy
   script:
+    - docker rm backend1
     - docker run -d -p 8001:8001 --name=backend1 --network=calculator_network $BACKEND1_IMAGE 
 
 backend2_deploy:
   stage: deploy
   script:
+    - docker rm backend2
     - docker run -d -p 8002:8002 --name=backend2 --network=calculator_network $BACKEND2_IMAGE
 
 frontend_deploy:
   stage: deploy
   script:
+    - docker rm frontend
     - docker run -d -p 8003:8003 --name=frontend --network=calculator_network $FRONTEND_IMAGE
 
 nginx_deploy:
   stage: deploy
   script:
+    - docker rm nginx
     - docker run -d -p 8000:8000 --name=nginx --network=calculator_network $NGINX_IMAGE
