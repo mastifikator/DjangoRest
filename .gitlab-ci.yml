@@ -51,7 +51,7 @@ environment_build:
   script:
     - NETWORK_CHECK=$(docker network ls --filter name=calculator_network)
     - echo $NETWORK_CHECK
-    - if [ "$NETWORK_CHECK" == "" ]; then $(docker network create -d bridge calculator_network); fi
+    - if [ "$NETWORK_CHECK" == "NETWORK ID NAME DRIVER SCOPE" ]; then $(docker network create -d bridge calculator_network); fi
   allow_failure: true
 
 backend1_deploy:
