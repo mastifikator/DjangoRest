@@ -1,6 +1,6 @@
 stages:
-  - build
-  - deploy
+  - build_main
+  - deploy_main
 
 before_script:
   - pwd
@@ -18,44 +18,44 @@ variables:
   FRONTEND_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/frontend/$CI_COMMIT_REF_NAME:latest
   NGINX_IMAGE: $CI_REGISTRY/$USER_NAME/djangorest/nginx/$CI_COMMIT_REF_NAME:latest
 
-backend1_build_dev:
-  stage: build
+backend1_build_main:
+  stage: build_main
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $BACKEND1_IMAGE --rm ./stage1_docker/backend1/additional/
     - docker push $BACKEND1_IMAGE
   only: 
-    - dev
+    - main
 
-backend2_build_dev:
-  stage: build
+backend2_build_main:
+  stage: build_main
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $BACKEND2_IMAGE --rm ./stage1_docker/backend2/multiplication/
     - docker push $BACKEND2_IMAGE
   only: 
-    - dev
+    - main
 
-frontend_build_dev:
-  stage: build
+frontend_build_main:
+  stage: build_main
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $FRONTEND_IMAGE --rm ./stage1_docker/frontend/front/
     - docker push $FRONTEND_IMAGE
   only: 
-    - dev
+    - main
 
-nginx_build_dev:
-  stage: build
+nginx_build_main:
+  stage: build_main
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $NGINX_IMAGE --rm ./stage1_docker/nginx/
     - docker push $NGINX_IMAGE
   only: 
-    - dev
+    - main
 
-environment_build_dev:
-  stage: build
+environment_build_main:
+  stage: build_main
   script:
     - NETWORK_CHECK=$(docker network ls --filter name=calculator_network)
     - NETWORK_NAME='calculator_network'
@@ -63,40 +63,40 @@ environment_build_dev:
     - if grep -q "$NETWORK_NAME" <<< "$NETWORK_CHECK"; then echo "network $NETWORK_NAME exist"; else docker network create -d bridge calculator_network; fi
   allow_failure: true
   only: 
-    - dev
+    - main
 
-backend1_deploy_dev:
-  stage: deploy
+backend1_deploy_main:
+  stage: deploy_main
   script:
     - docker stop backend1
     - docker rm backend1
     - docker run -d -p 8001:8001 --name=backend1 --network=calculator_network $BACKEND1_IMAGE
   only: 
-    - dev
+    - main
 
-backend2_deploy_dev:
-  stage: deploy
+backend2_deploy_main:
+  stage: deploy_main
   script:
     - docker stop backend2
     - docker rm backend2
     - docker run -d -p 8002:8002 --name=backend2 --network=calculator_network $BACKEND2_IMAGE
   only: 
-    - dev
+    - main
 
-frontend_deploy_dev:
-  stage: deploy
+frontend_deploy_main:
+  stage: deploy_main
   script:
     - docker stop frontend
     - docker rm frontend
     - docker run -d -p 8003:8003 --name=frontend --network=calculator_network $FRONTEND_IMAGE
   only: 
-    - dev
+    - main
 
-nginx_deploy_dev:
-  stage: deploy
+nginx_deploy_main:
+  stage: deploy_main
   script:
     - docker stop nginx
     - docker rm nginx
     - docker run -d -p 8000:8000 --name=nginx --network=calculator_network $NGINX_IMAGE
   only: 
-    - dev
+    - main
