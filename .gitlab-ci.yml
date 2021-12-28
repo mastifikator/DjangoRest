@@ -49,9 +49,8 @@ nginx_build:
 environment_build:
   stage: build
   script:
-    - NETWORK_CHECK=$(docker network create -d bridge calculator_network)
-    - if [ "$NETWORK_CHECK" == "false" ]; then NETWORK_RESPONSE="network already exist"; else NETWORK_RESPONSE ="networc succefull create"; fi
-    - echo NETWORK_RESPONSE
+    - NETWORK_CHECK=$(docker network ls --filter name=calculator_network)
+    - if [ "$NETWORK_CHECK" == "" ]; then docker network create -d bridge calculator_network; fi
   allow_failure: true
 
 backend1_deploy:
